@@ -1,0 +1,159 @@
+:root {
+  --background: #000000;
+  --component-bg: rgba(255, 255, 255, 0.05);
+  --white-icon: rgba(255, 255, 255, 0.7);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.main-nav {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background-color: var(--background);
+  border: 1px solid transparent;
+  backdrop-filter: blur(20px);
+  transition: all 0.5s ease-in-out;
+  top: 1.5rem;
+  bottom: auto;
+  width: 80%;
+}
+
+.main-nav.scrolling {
+  background-color: var(--component-bg);
+  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+
+.nav-content {
+  container: mx-auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
+}
+
+.nav-list {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  flex: 1;
+}
+
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--white-icon);
+  transition: colors 0.3s ease;
+  font-size: 0.75rem;
+  text-decoration: none;
+  position: relative;
+}
+
+.nav-indicator {
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  opacity: 0;
+  background-color: #A9FF5B;
+  display: none;
+}
+
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.nav-label-desktop {
+  display: none;
+}
+
+.nav-label-mobile {
+  display: block;
+}
+
+.nav-link.active .nav-indicator {
+  transform: translateY(-50%) scale(1);
+  opacity: 1;
+}
+
+.nav-link.active {
+  color: white !important;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .nav-list {
+    justify-content: center;
+    gap: 3rem;
+  }
+  
+  .nav-item {
+    flex: none;
+  }
+  
+  .nav-link {
+    font-size: 1rem;
+  }
+  
+  .nav-indicator {
+    display: block;
+  }
+  
+  .nav-icon {
+    display: none;
+  }
+  
+  .nav-label-desktop {
+    display: inline-block;
+  }
+  
+  .nav-label-mobile {
+    display: none;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .main-nav {
+    width: 100% !important;
+    transform: translateX(-50%);
+    bottom: 0;
+    left: 50%;
+    top: auto;
+    position: fixed;
+    border-radius: 1rem 1rem 0 0;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .main-nav.scrolling {
+    border-radius: 1rem 1rem 0 0;
+    background-color: var(--component-bg);
+  }
+
+  body {
+    padding-bottom: 70px;
+  }
+}
