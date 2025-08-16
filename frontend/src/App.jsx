@@ -82,26 +82,26 @@ const handleAnimationComplete = () => {
 };
 
   return (
-    <>
+    <div className="w-full overflow-x-hidden">
       <Navbar />
-      <main>
+      <main className="w-full overflow-x-hidden">
         <section id="home" className="section">
           <div>
             <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
           </div>
         </section>
 
-<section id="about" className="py-6 md:py-8 border-b border-white/10">
-  <div className="mx-auto max-w-7xl px-6 lg:px-10">
+<section id="about" className="py-6 md:py-8 border-b border-white/10 w-full overflow-x-hidden">
+  <div className="mx-auto max-w-7xl px-4 lg:px-6 w-full">
     {/* Heading aligns with grid because it's inside the same container */}
     <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight py-2">
       Hi there 👋
     </h2>
 
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-y-0 lg:gap-x-16 items-start lg:items-center">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-y-0 lg:gap-x-16 items-start lg:items-center w-full">
       {/* LEFT: compact ScrambledText, no extra padding */}
-      <div className="lg:col-span-6">
-        <div className="max-w-xl">
+      <div className="lg:col-span-6 w-full">
+        <div className="max-w-xl w-full">
           <ScrambledText
             className="scrambled-text-demo text-left text-base md:text-lg leading-snug"
             radius={100}
@@ -109,7 +109,7 @@ const handleAnimationComplete = () => {
             speed={0.5}
             scrambleChars=".:"
           >
-            I’m Swapnil, a senior CS student at NJIT building fast, scalable, and impactful software.
+            I'm Swapnil, a senior CS student at NJIT building fast, scalable, and impactful software.
             From Automation pipelines and DevOps integrations to AI-powered apps, I turn complex ideas into reliable products.
             I focus on performance, automation, and clean design that delivers real-world results.
           </ScrambledText>
@@ -117,10 +117,10 @@ const handleAnimationComplete = () => {
       </div>
 
       {/* RIGHT: LetterGlitch panel — consistent sizing, no inner padding */}
-      <div className="lg:col-span-6">
-        <div className="relative w-full max-w-2xl lg:max-w-none overflow-hidden ">
+      <div className="lg:col-span-6 w-full">
+        <div className="relative w-full max-w-2xl lg:max-w-none overflow-hidden">
           {/* choose ONE sizing approach; aspect keeps it neat */}
-          <div className="aspect-[16/10] md:aspect-[16/9]">
+          <div className="aspect-[16/10] md:aspect-[16/9] w-full">
             <LetterGlitch
               glitchSpeed={50}
               centerVignette={true}
@@ -137,7 +137,9 @@ const handleAnimationComplete = () => {
         </div>
       </div>
     </div>
-    <SkillsMarquee />
+    <div className="w-full overflow-x-hidden">
+      <SkillsMarquee />
+    </div>
   </div>
 </section>
 
@@ -201,7 +203,7 @@ const handleAnimationComplete = () => {
           <Contact /> 
         </section>
       </main>
-    </>
+    </div>
   )
 }
 
