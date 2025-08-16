@@ -12,7 +12,8 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/', // change to '/' if username.github.io repo
+  base: '/portfolio/', 
   plugins: [react(), tailwindcss()],
   assetsInclude: ['**/*.glb'],
 })
+
