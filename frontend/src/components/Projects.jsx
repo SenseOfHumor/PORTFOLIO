@@ -1,31 +1,33 @@
 // src/components/Projects.jsx
 import React from "react";
+import restlessimage from "/restless.png";
 
 // Example stock images (you can replace these with your own imports or URLs)
+const restless = restlessimage;
 const stock1 = "https://picsum.photos/600/400?random=1";
 const stock2 = "https://picsum.photos/600/400?random=2";
 const stock3 = "https://picsum.photos/600/400?random=3";
 
 const projects = [
   {
-    title: "Project1",
-    image: stock1,
-    link: "https://github.com/gothsec/MoviesForDevs",
-    preview: "https://movies-for-devs.vercel.app",
-    status: "Completed",
+    title: "RESTLESS",
+    image: restless,
+    link: "https://github.com/SenseOfHumor/RESTLESS",
+    preview: "https://turing-restless-eb7b0e041c52.herokuapp.com/",
+    status: "Maximize ATS for your resume",
   },
   {
     title: "Project2",
     image: stock2,
-    link: "https://github.com/gothsec/stockin-demo",
-    preview: "https://stockin-demo.vercel.app",
+    link: "",
+    preview: "",
     status: "Completed",
   },
   {
     title: "Project3",
     image: stock3,
-    link: "https://github.com/pheralb/svgl",
-    preview: "https://svgl.app",
+    link: "",
+    preview: "",
     status: "Completed",
   },
 ];
