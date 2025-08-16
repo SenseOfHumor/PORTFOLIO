@@ -1,5 +1,5 @@
 // src/components/SkillsMarquee.jsx
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 const DEFAULT_TECH = [
   "Python",
@@ -9,36 +9,192 @@ const DEFAULT_TECH = [
   "React",
   "TailwindCSS",
   "Git",
-  "ConvexDb",     // we'll hide the icon for this one
+  "Convex",
   "Clerk",
-  "AWS",
+  "AWS",         // Will use SVGL (Amazon Web Services)
   "MySQL",
   "Bash",
 ];
 
-// Map each display name → array of candidate Simple Icons slugs (in order)
+// Public SVGL index (no auth; cached in-memory here)
+const SVGL_API = "https://api.svgl.app";
+let __SVGL_CACHE = null;
+
+// Technologies that should use SVGL (only Java, Convex, AWS)
+const USE_SVGL_FOR = new Set(["java", "convex", "aws"]);
+
+/**
+ * Normalize display names to increase matching tolerance.
+ */
+function normalize(s) {
+  return s.toLowerCase().replace(/\s+|[._\-\/]/g, " ").trim();
+}
+function titlesMatch(a, b) {
+  return normalize(a) === normalize(b);
+}
+
+/**
+ * Friendly-name -> canonical SVGL title for the three technologies we want to use SVGL for.
+ */
+const TITLE_OVERRIDES = {
+  aws: "Amazon Web Services",
+  convex: "Convex",
+  java: "Java",
+};
+
+/**
+ * Extra aliases to try when titles differ or users type variants.
+ */
+const ALIAS_MAP = {
+  aws: ["AWS", "Amazon Web Services"],
+  convex: ["Convex", "Convex DB", "ConvexDB"],
+  java: ["Java", "OpenJDK"],
+};
+
+// Simple Icons fallback for all other technologies
+const SIMPLE_ICONS_BASE = "https://cdn.simpleicons.org";
 const ICON_CANDIDATES = {
   python: ["python"],
   fastapi: ["fastapi"],
-  java: ["java", "openjdk"],        // try 'java', then 'openjdk'
   c: ["c"],
   react: ["react"],
   tailwindcss: ["tailwindcss"],
   git: ["git"],
-  convex: [],                       // empty → hide icon (label still shows)
   clerk: ["clerk"],
-  aws: ["amazonaws", "aws"],        // try 'amazonaws', then 'aws'
   mysql: ["mysql"],
-  bash: ["gnubash", "bash"],        // try 'gnubash', then 'bash'
+  bash: ["gnubash", "bash"],
 };
 
-function getCandidates(name) {
-  const key = name.toLowerCase();
-  return ICON_CANDIDATES[key] ?? [key];
+function simpleIconUrl(slug) {
+  return `${SIMPLE_ICONS_BASE}/${slug}`;
 }
 
-function iconUrlFromSlug(slug) {
-  return `https://cdn.simpleicons.org/${slug}`;
+/**
+ * Fetch & memoize SVGL index once per session.
+ */
+function useSvglIndex() {
+  const [list, setList] = useState(__SVGL_CACHE);
+  const [loading, setLoading] = useState(!__SVGL_CACHE);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      if (__SVGL_CACHE) return;
+      try {
+        setLoading(true);
+        const res = await fetch(SVGL_API);
+        const data = await res.json();
+        __SVGL_CACHE = data;
+        if (!cancelled) setList(data);
+      } catch (e) {
+        if (!cancelled) setError(e);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    if (!__SVGL_CACHE) load();
+    return () => { cancelled = true; };
+  }, []);
+
+  return { list: list ?? [], loading, error };
+}
+
+/**
+ * Resolve a display name to an SVGL route (https://svgl.app/<slug>.svg)
+ * Only for Java, Convex, and AWS
+ */
+function resolveRouteForTech(name, list) {
+  const key = name.toLowerCase();
+
+  // Only use SVGL for specific technologies
+  if (!USE_SVGL_FOR.has(key)) {
+    return null;
+  }
+
+  // Debug logging for AWS
+  if (key === 'aws') {
+    console.log('AWS Debug:', {
+      name,
+      key,
+      listLength: list.length,
+      targetTitle: TITLE_OVERRIDES[key],
+      aliases: ALIAS_MAP[key],
+      sampleTitles: list.slice(0, 10).map(item => item.title)
+    });
+  }
+
+  // 1) Canonical title if we know it; else use incoming name
+  const targetTitle = TITLE_OVERRIDES[key] ?? name;
+
+  // 2) Exact (normalized) title match
+  const exact = list.find((it) => titlesMatch(it.title, targetTitle));
+  if (exact?.route) {
+    if (key === 'aws') console.log('AWS found exact match:', exact);
+    // Handle both string routes and theme-based routes
+    if (typeof exact.route === 'string') {
+      return exact.route;
+    } else if (exact.route?.light) {
+      // For theme-based routes, prefer light theme
+      return exact.route.light;
+    }
+  }
+
+  // 3) Try aliases
+  const aliases = ALIAS_MAP[key] || [];
+  for (const a of aliases) {
+    const hit = list.find((it) => titlesMatch(it.title, a));
+    if (hit?.route) {
+      if (key === 'aws') console.log('AWS found alias match:', hit);
+      // Handle both string routes and theme-based routes
+      if (typeof hit.route === 'string') {
+        return hit.route;
+      } else if (hit.route?.light) {
+        return hit.route.light;
+      }
+    }
+  }
+
+  // 4) Mild heuristics (strip/join spaces, hyphens, etc.)
+  const candidates = [
+    targetTitle,
+    targetTitle.replace(/\s+/g, ""),
+    targetTitle.replace(/\s+/g, "-"),
+    targetTitle.replace(/\s+/g, "."),
+  ];
+  for (const c of candidates) {
+    const hit = list.find((it) => titlesMatch(it.title, c));
+    if (hit?.route) {
+      if (key === 'aws') console.log('AWS found heuristic match:', hit);
+      // Handle both string routes and theme-based routes
+      if (typeof hit.route === 'string') {
+        return hit.route;
+      } else if (hit.route?.light) {
+        return hit.route.light;
+      }
+    }
+  }
+
+  // // Debug: show what AWS-related items exist
+  // if (key === 'aws') {
+  //   const awsItems = list.filter(item => 
+  //     item.title.toLowerCase().includes('amazon') || 
+  //     item.title.toLowerCase().includes('aws')
+  //   );
+  //   console.log('AWS-related items found:', awsItems);
+  // }
+
+  // No icon found → show label only
+  return null;
+}
+
+/**
+ * Get Simple Icons URL for technologies not using SVGL
+ */
+function getSimpleIconUrl(name) {
+  const key = name.toLowerCase();
+  const slugs = ICON_CANDIDATES[key] ?? [key];
+  return slugs.map(slug => simpleIconUrl(slug));
 }
 
 export default function SkillsMarquee({
@@ -47,7 +203,13 @@ export default function SkillsMarquee({
   durationDesktop = 50,
   gradientWidth = "8rem",
 }) {
-  const looped = [...technologies, ...technologies, ...technologies];
+  const { list, loading } = useSvglIndex();
+
+  // Render enough items to loop smoothly
+  const looped = useMemo(
+    () => [...technologies, ...technologies, ...technologies],
+    [technologies]
+  );
 
   return (
     <div className="relative overflow-x-hidden py-8 group">
@@ -72,36 +234,51 @@ export default function SkillsMarquee({
       {/* Marquee track */}
       <div className="flex w-max gap-12 md:gap-20 marquee-track">
         {looped.map((tech, i) => {
-          const candidates = getCandidates(tech);
+          const key = tech.toLowerCase();
+          let iconSrc = null;
+          let candidates = [];
 
-          // If no candidates (e.g., Convex), render no icon—just the label.
-          const initialSrc = candidates.length ? iconUrlFromSlug(candidates[0]) : null;
+          // Check if this tech should use SVGL
+          if (USE_SVGL_FOR.has(key)) {
+            const route = loading ? null : resolveRouteForTech(tech, list);
+            if (route) {
+              iconSrc = route;
+              candidates = [route];
+            }
+          } else {
+            // Use Simple Icons for other technologies
+            candidates = getSimpleIconUrl(tech);
+            iconSrc = candidates[0] ?? null;
+          }
 
           return (
             <div
               key={`${tech}-${i}`}
               className="flex items-center gap-2 transition-all duration-300 group/item"
             >
-              {initialSrc && (
+              {iconSrc && (
                 <img
-                  src={initialSrc}
+                  src={iconSrc}
                   alt={tech}
                   className="h-7 w-auto object-contain transition-transform opacity-60 group-hover/item:scale-110"
                   width="30"
                   height="30"
                   loading="lazy"
-                  // keep track of candidates in data attrs (no extra state/hooks needed)
+                  decoding="async"
                   data-candidates={candidates.join(",")}
                   data-index="0"
                   onError={(e) => {
                     const el = e.currentTarget;
-                    const list = (el.dataset.candidates || "").split(",").filter(Boolean);
+                    const list = (el.dataset.candidates || "")
+                      .split(",")
+                      .map(s => s.trim())
+                      .filter(Boolean);
                     let idx = parseInt(el.dataset.index || "0", 10);
 
-                    // Try next candidate if available
+                    // Try next candidate URL if available
                     if (idx + 1 < list.length) {
                       el.dataset.index = String(idx + 1);
-                      el.src = iconUrlFromSlug(list[idx + 1]);
+                      el.src = list[idx + 1];
                     } else {
                       // No candidates left → hide icon, keep label
                       el.style.display = "none";

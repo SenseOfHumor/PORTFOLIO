@@ -13,6 +13,7 @@ import Orb  from './components/Orb'
 import PixelCard from './components/PixelCard'
 import Masonry from './components/Masonry';
 import CircularGallery from './components/CircularGallery'
+import Projects from './components/Projects'
 
 const items = [
     {
@@ -163,7 +164,7 @@ const handleAnimationComplete = () => {
             // your card content (use position: absolute)
           </PixelCard>
           </div> */}
-        <div 
+        {/* <div 
         className='w-full'
         style={{ height: '600px', position: 'relative' }}>
           <CircularGallery 
@@ -180,9 +181,10 @@ const handleAnimationComplete = () => {
             borderRadius={0.05} 
             scrollEase={0.02}
             scrollSpeed={2}
-          />
-        </div>
-        
+          /> 
+        </div> */}
+        <Projects />
+
         </section>
 
         <section id="contact" className="section">
