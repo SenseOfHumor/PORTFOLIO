@@ -1,5 +1,13 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+"use client";
+import React, {
+  useLayoutEffect,
+  useRef,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
 import { gsap } from "gsap";
+import { motion, AnimatePresence } from "motion/react";
 
 export default function ContactForm({
   formAction = "https://formspree.io/f/xyzpvqjl",
@@ -18,11 +26,12 @@ export default function ContactForm({
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
       tl.from(".cf-card", { y: 18, opacity: 0, duration: 0.5 })
-        .from(
-          ".cf-head, .cf-meta, .cf-field",
-          { y: 16, opacity: 0, duration: 0.5, stagger: 0.08 },
-          "-=0.1"
-        )
+        .from(".cf-head, .cf-meta, .cf-field", {
+          y: 16,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+        }, "-=0.1")
         .from(".cf-cta", { y: 8, opacity: 0, duration: 0.45 }, "-=0.2");
     }, rootRef);
     return () => ctx.revert();
@@ -51,17 +60,17 @@ export default function ContactForm({
       });
 
       if (res.ok) {
-        setStatus({ type: "success", message: "Thanks! Your message is on its way." });
+        setStatus({ type: "success 🎉", message: "Thanks! Your message is on its way." });
         form.reset();
       } else {
         const data = await res.json().catch(() => ({}));
         setStatus({
           type: "error",
-          message: data?.errors?.[0]?.message || "Something went wrong. Please try again.",
+          message: data?.errors?.[0]?.message || "‼️ Something went wrong. Please try again.",
         });
       }
     } catch (err) {
-      setStatus({ type: "error", message: "Network error. Please try again." });
+      setStatus({ type: "error", message: "‼️ Network error. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -70,15 +79,25 @@ export default function ContactForm({
   return (
     <section ref={rootRef} className="flex justify-center px-4 sm:px-6 md:px-8">
       <div className="cf-card relative max-w-2xl rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 shadow-sm bg-transparent">
+        {/* HEADER */}
         <header className="cf-head">
-          <h2 className="text-left text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-            👋 Tell me about <span className="text-blue-600 dark:text-blue-500">your idea</span>
+          {/* Force single-line on larger screens; on very tiny screens it will still try to stay one line */}
+          <h2 className="text-left text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 whitespace-nowrap flex items-baseline gap-2">
+            <span>👋 Tell me about</span>
+            <RotatingTextPill
+              texts={["your idea", "your project", "your startup", "your challenge", "a feature", "a bug", "a Job opportunity"]}
+              // timing and motion feel
+              interval={3200}
+              spring={{ type: "spring", damping: 26, stiffness: 320 }}
+            />
           </h2>
+
           <p className="mt-2 text-left text-sm text-zinc-600 dark:text-zinc-400">
-            Tell me a bit about your project or question. I’ll reply as soon as I can.
+            Keep it short and sweet. I read every message and will reply soon.. I promise!
           </p>
         </header>
 
+        {/* META */}
         <div className="cf-meta mt-5 flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-400">
           <span className="inline-flex items-center gap-2">
             <MapPinIcon className="size-4" />
@@ -96,13 +115,39 @@ export default function ContactForm({
           </a>
         </div>
 
+        {/* FORM */}
         <form onSubmit={handleSubmit} className="mt-8 grid grid-cols-1 gap-5" noValidate>
           {/* Honeypot */}
           <input type="text" name="website" autoComplete="off" className="hidden" tabIndex={-1} />
 
-          <InputField className="cf-field" id="name" name="name" type="text" placeholder={nameLabel} autoComplete="name" required />
-          <InputField className="cf-field" id="email" name="email" type="email" placeholder={emailLabel} autoComplete="email" required />
-          <TextareaField className="cf-field" id="message" name="message" placeholder={messageLabel} rows={6} required />
+          <InputBare
+            className="cf-field"
+            id="name"
+            name="name"
+            type="text"
+            placeholder={nameLabel}
+            autoComplete="name"
+            required
+          />
+
+          <InputBare
+            className="cf-field"
+            id="email"
+            name="email"
+            type="email"
+            placeholder={emailLabel}
+            autoComplete="email"
+            required
+          />
+
+          <TextareaBare
+            className="cf-field"
+            id="message"
+            name="message"
+            placeholder={messageLabel}
+            rows={6}
+            required
+          />
 
           <div aria-live="polite" className="min-h-6">
             {status.type === "success" && (
@@ -138,29 +183,134 @@ export default function ContactForm({
   );
 }
 
-function InputField({ id, className = "", type = "text", placeholder, ...rest }) {
+/* -------------------------------------------------------------------------- */
+/*                             RotatingTextPill                               */
+/* -------------------------------------------------------------------------- */
+/**
+ * Blue pill that rotates phrases without overlapping neighbors.
+ * - Reserves width to the WIDEST phrase (measured offscreen) via minWidth.
+ * - Keeps height stable with an invisible placeholder.
+ * - Animates words with motion; no background animations elsewhere.
+ */
+function RotatingTextPill({
+  texts = ["your idea"],
+  interval = 2200,
+  spring = { type: "spring", damping: 26, stiffness: 320 },
+}) {
+  const [index, setIndex] = useState(0);
+  const widest = useMemo(
+    () => texts.reduce((a, b) => (a.length >= b.length ? a : b), texts[0] ?? ""),
+    [texts]
+  );
+
+  const measurerRef = useRef(null);
+  const [minW, setMinW] = useState(0);
+
+  useEffect(() => {
+    if (!measurerRef.current) return;
+    const node = measurerRef.current;
+    const measure = () => setMinW(Math.ceil(node.offsetWidth));
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(node);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [widest]);
+
+  useEffect(() => {
+    if (texts.length <= 1) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % texts.length);
+    }, Math.max(600, interval));
+    return () => clearInterval(id);
+  }, [texts.length, interval]);
+
+  return (
+    <span className="relative inline-flex items-center align-baseline">
+      {/* Invisible measurer for width */}
+      <span className="absolute -z-10 -left-[10000px] top-0">
+        <span
+          ref={measurerRef}
+          className="inline-flex items-center rounded-md px-3 py-1 text-blue-700 bg-blue-50 ring-1 ring-inset ring-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-400/30 text-2xl sm:text-3xl font-semibold"
+        >
+          {widest}
+        </span>
+      </span>
+
+      {/* Visible box */}
+      <span
+        className="relative inline-flex items-center rounded-md px-3 py-1
+                   text-blue-700 bg-blue-50 ring-1 ring-inset ring-blue-200
+                   dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-400/30
+                   overflow-hidden"
+        style={{ minWidth: minW ? `${minW}px` : undefined }}
+      >
+        {/* Height stabilizer */}
+        <span className="invisible select-none pointer-events-none text-2xl sm:text-3xl font-semibold">
+          {widest}
+        </span>
+
+        {/* Animated current text, clipped inside box */}
+        <span className="absolute inset-0 flex items-center justify-center">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={index}
+              initial={{ y: "100%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "-100%", opacity: 0 }}
+              transition={spring}
+              className="inline-block text-2xl sm:text-3xl font-semibold will-change-transform"
+            >
+              {texts[index]}
+            </motion.span>
+          </AnimatePresence>
+        </span>
+      </span>
+    </span>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                             Bare Input/Textarea                            */
+/* -------------------------------------------------------------------------- */
+
+function InputBare({ className = "", ...rest }) {
   return (
     <input
-      id={id}
-      type={type}
-      placeholder={placeholder}
-      className={"block rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-4 py-3 text-[15px] text-left text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-4 ring-0 focus:ring-zinc-900/10 dark:focus:ring-white/10 transition-shadow focus:placeholder-transparent [&:not(:placeholder-shown)]:placeholder-transparent " + className}
+      className={
+        "block rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-4 py-3 " +
+        "text-[15px] text-left text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 " +
+        "focus:outline-none focus:ring-4 ring-0 focus:ring-zinc-900/10 dark:focus:ring-white/10 " +
+        "transition-shadow focus:placeholder-transparent [&:not(:placeholder-shown)]:placeholder-transparent " +
+        className
+      }
       {...rest}
     />
   );
 }
 
-function TextareaField({ id, className = "", rows = 6, placeholder, ...rest }) {
+function TextareaBare({ className = "", rows = 6, ...rest }) {
   return (
     <textarea
-      id={id}
-      placeholder={placeholder}
       rows={rows}
-      className={"block resize-y rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-4 py-3 text-[15px] text-left leading-relaxed text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-4 focus:ring-zinc-900/10 dark:focus:ring-white/10 transition-shadow min-h-32 focus:placeholder-transparent [&:not(:placeholder-shown)]:placeholder-transparent " + className}
+      className={
+        "block resize-y rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-4 py-3 " +
+        "text-[15px] text-left leading-relaxed text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 " +
+        "focus:outline-none focus:ring-4 focus:ring-zinc-900/10 dark:focus:ring-white/10 " +
+        "transition-shadow min-h-32 focus:placeholder-transparent [&:not(:placeholder-shown)]:placeholder-transparent " +
+        className
+      }
       {...rest}
     />
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                    Icons                                   */
+/* -------------------------------------------------------------------------- */
 
 function MapPinIcon({ className = "size-4" }) {
   return (
