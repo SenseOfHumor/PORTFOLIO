@@ -14,6 +14,7 @@ import PixelCard from './components/PixelCard'
 import Masonry from './components/Masonry';
 import CircularGallery from './components/CircularGallery'
 import Projects from './components/Projects'
+import Contact from './components/Contact'
 
 const items = [
     {
@@ -188,14 +189,16 @@ const handleAnimationComplete = () => {
         </section>
 
         <section id="contact" className="section">
-          <div className="section-content">
+          {/* <div className="section-content">
             <h1>Contact</h1>
             <p>Get in touch with me...</p>
             <div className="contact-info">
               <p>Email: swa2314@gmail.com</p>
               <p>Phone: +1 (862) 385-5820</p>
             </div>
-          </div>
+          </div> */}
+
+          <Contact /> 
         </section>
       </main>
     </>
