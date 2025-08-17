@@ -90,10 +90,10 @@ function getSimpleIconUrl(name) {
   return slugs.map(simpleIconUrl);
 }
 
-export default function SkillsMarquee({
+function SkillsMarquee({
   technologies = DEFAULT_TECH,
   durationMobile = 10,   // smoother default
-  durationDesktop = 10,  // smoother default
+  durationDesktop = 5,  // smoother default
   gradientWidth = "8rem",
 }) {
   const { list, loading } = useSvglIndex();
@@ -196,3 +196,5 @@ export default function SkillsMarquee({
     </div>
   );
 }
+
+export default React.memo(SkillsMarquee);

@@ -36,8 +36,7 @@ export default function Projects() {
   return (
     <div className="max-w-5xl mx-auto">
       {/* Headings */}
-      <h2 className="text-lg text-[var(--sec)] mb-2 shiny-sec">My work</h2>
-      <h3 className="text-4xl md:text-5xl font-medium mb-8">Projects</h3>
+      <h2 className="text-2xl text-[var(--sec)] mb-20 shiny-sec">My works</h2>
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
