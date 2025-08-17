@@ -93,7 +93,7 @@ function getSimpleIconUrl(name) {
 function SkillsMarquee({
   technologies = DEFAULT_TECH,
   durationMobile = 10,   // smoother default
-  durationDesktop = 5,  // smoother default
+  durationDesktop = 25,  // smoother default
   gradientWidth = "8rem",
 }) {
   const { list, loading } = useSvglIndex();
