@@ -15,6 +15,7 @@ import Masonry from './components/Masonry';
 import CircularGallery from './components/CircularGallery'
 import Projects from './components/Projects'
 import Contact from './components/Contact'
+import Footer from './components/Footer'
 
 const items = [
     {
@@ -202,6 +203,17 @@ const handleAnimationComplete = () => {
 
           <Contact /> 
         </section>
+        
+        <Footer
+          name="Swapnil Deb"
+          githubUrl="https://github.com/SenseOfHumor"
+          linkedinUrl="https://www.linkedin.com/in/swapnil-deb-3096b2207/"
+          email="swa2314@gmail.com"
+          musicProvider="apple"
+          musicUrl="https://music.apple.com/in/playlist/blume/pl.u-e98lGdEuadG46JX"
+        />
+
+
       </main>
     </div>
   )
