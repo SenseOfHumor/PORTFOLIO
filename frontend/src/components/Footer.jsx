@@ -33,11 +33,11 @@ export default function Footer({
   ];
 
   return (
-    <footer className="w-full border-t border-zinc-200/20 dark:border-zinc-800/60 bg-transparent">
+    <footer className="border-t border-zinc-200/20 dark:border-zinc-800/60 bg-transparent">
       {/* top divider flair */}
       <div className="h-px bg-gradient-to-r from-transparent via-zinc-300/40 dark:via-zinc-700/40 to-transparent" />
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
+      <div className="footer-container py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Column 1 — Brand + Social */}
           <div className="flex flex-col items-center lg:items-start gap-4">

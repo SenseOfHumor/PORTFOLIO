@@ -64,7 +64,7 @@ const ScrambledText = ({
   return (
     <div
       ref={rootRef}
-      className={`w-full min-h-[50vh] font-mono text-[clamp(6px,2.5vw,18px)] text-white flex justify-center items-center ${className}`}
+      className={`w-full min-h-[20vh] font-mono text-[clamp(6px,2.5vw,18px)] text-white flex justify-center items-center ${className}`}
       style={style}
     >
   <p className="break-words text-left max-w-4xl mx-auto" style={{wordWrap: 'break-word', overflowWrap: 'break-word'}}>{children}</p>

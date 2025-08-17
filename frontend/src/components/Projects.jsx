@@ -1,13 +1,13 @@
 // src/components/Projects.jsx
 import React from "react";
 import restlessimage from "/restless.png";
+import argonimage from "/argon.png";
+import bulbimage from "/bulb.png";  
 
 // Example stock images (you can replace these with your own imports or URLs)
 const restless = restlessimage;
-const stock1 = "https://picsum.photos/600/400?random=1";
-const stock2 = "https://picsum.photos/600/400?random=2";
-const stock3 = "https://picsum.photos/600/400?random=3";
-
+const argon = argonimage;
+const bulb = bulbimage;
 const projects = [
   {
     title: "RESTLESS",
@@ -17,18 +17,18 @@ const projects = [
     status: "Maximize ATS for your resume",
   },
   {
-    title: "Project2",
-    image: stock2,
+    title: "ARGON18",
+    image: argon,
     link: "",
     preview: "",
-    status: "Completed",
+    status: "Coming Soon! B2B SAAS for Custom Automation",
   },
   {
-    title: "Project3",
-    image: stock3,
+    title: "BULB.io",
+    image: bulbimage,
     link: "",
     preview: "",
-    status: "Completed",
+    status: "Create Actionable Insights from Data | Automate Research",
   },
 ];
 

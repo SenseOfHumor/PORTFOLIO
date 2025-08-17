@@ -36,7 +36,7 @@ body {
 }
 
 .section {
-  min-height: 80vh;
+  min-height: 50vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,8 +53,22 @@ body {
 }
 
 .section-content {
-  max-width: 800px;
+  max-width: 1000px;
   width: 100%;
+}
+
+.footer-container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .footer-container {
+    padding: 2rem;
+  }
 }
 
 .section h1 {
