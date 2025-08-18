@@ -50,7 +50,7 @@ export default function Footer({
               />
               <div className="text-center lg:text-left">
                 <p className="text-sm text-zinc-500 dark:text-zinc-400">crafted by</p>
-                <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">{name}</p>
+                <p className="text-lg font-semibold text-zinc-100 dark:text-zinc-100">{name}</p>
               </div>
             </div>
 
