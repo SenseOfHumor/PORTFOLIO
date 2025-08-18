@@ -182,18 +182,23 @@ export default function ContactForm({
 
           <div className="cf-cta flex">
             <button
-              type="submit"
-              disabled={isSubmitting}
-              className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium text-gray-900 bg-gray-300 hover:bg-gray-400 shadow-sm hover:shadow transition-[transform,box-shadow] disabled:opacity-50 active:scale-[0.98]"
+            type="submit"
+            disabled={isSubmitting}
+            className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium
+                        text-zinc-100 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700
+                        shadow-sm hover:shadow transition-[transform,box-shadow] active:scale-[0.98]
+                        disabled:opacity-60 disabled:hover:bg-zinc-900 disabled:text-zinc-400
+                        focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/10"
             >
-              {isSubmitting ? (
+            {isSubmitting ? (
                 <span className="inline-flex items-center gap-2">
-                  <Spinner className="size-4" /> Sending…
+                <Spinner className="size-4" /> Sending…
                 </span>
-              ) : (
+            ) : (
                 ctaLabel
-              )}
+            )}
             </button>
+
           </div>
 
           <p className="mt-1 text-[11px] text-zinc-500">
