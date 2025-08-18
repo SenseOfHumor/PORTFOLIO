@@ -82,7 +82,7 @@ export default function ContactForm({
         {/* HEADER */}
         <header className="cf-head">
           {/* Force single-line on larger screens; on very tiny screens it will still try to stay one line */}
-          <h2 className="text-left text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 whitespace-nowrap flex items-baseline gap-2">
+          <h2 className="text-left text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 light:text-zinc-900 whitespace-nowrap flex items-baseline gap-2">
             <span>👋 Tell me about</span>
             <RotatingTextPill
               texts={["your idea", "your project", "your startup", "your challenge", "a feature", "a bug", "a Job opportunity"]}
@@ -162,7 +162,7 @@ export default function ContactForm({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium text-white bg-zinc-900 hover:bg-zinc-800 dark:text-zinc-900 dark:bg-zinc-100 dark:hover:bg-zinc-200 shadow-sm hover:shadow transition-[transform,box-shadow] disabled:opacity-50 active:scale-[0.98]"
+              className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:text-gray-900 dark:bg-gray-300 dark:hover:bg-gray-400 shadow-sm hover:shadow transition-[transform,box-shadow] disabled:opacity-50 active:scale-[0.98]"
             >
               {isSubmitting ? (
                 <span className="inline-flex items-center gap-2">
@@ -234,7 +234,7 @@ function RotatingTextPill({
       <span className="absolute -z-10 -left-[10000px] top-0">
         <span
           ref={measurerRef}
-          className="inline-flex items-center rounded-md px-2.5 py-0.5 text-blue-700 bg-blue-50 ring-1 ring-inset ring-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-400/30 text-xl sm:text-2xl font-semibold"
+          className="inline-flex items-center rounded-md px-2.5 py-0.5 text-blue-600 bg-blue-100 ring-1 ring-inset ring-blue-300 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-600/50 text-xl sm:text-2xl font-semibold"
         >
           {widest}
         </span>
@@ -243,8 +243,8 @@ function RotatingTextPill({
       {/* Visible box */}
       <span
         className="relative inline-flex items-center rounded-md px-2.5 py-0.5
-                   text-blue-700 bg-blue-50 ring-1 ring-inset ring-blue-200
-                   dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-400/30
+                   text-blue-600 bg-blue-100 ring-1 ring-inset ring-blue-300
+                   dark:bg-blue-900/30 dark:text-blue-200 dark:ring-blue-600/50
                    overflow-hidden"
         style={{ minWidth: minW ? `${minW}px` : undefined }}
       >
