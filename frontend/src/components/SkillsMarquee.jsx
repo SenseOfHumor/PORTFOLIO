@@ -92,7 +92,7 @@ function getSimpleIconUrl(name) {
 
 function SkillsMarquee({
   technologies = DEFAULT_TECH,
-  durationMobile = 10,   // smoother default
+  durationMobile = 20,   // smoother default
   durationDesktop = 25,  // smoother default
   gradientWidth = "8rem",
 }) {

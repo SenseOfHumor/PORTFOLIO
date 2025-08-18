@@ -162,7 +162,7 @@ export default function ContactForm({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium text-white bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 shadow-sm hover:shadow transition-[transform,box-shadow] disabled:opacity-50 active:scale-[0.98]"
+              className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium text-white bg-zinc-900 hover:bg-zinc-800 dark:text-zinc-900 dark:bg-zinc-100 dark:hover:bg-zinc-200 shadow-sm hover:shadow transition-[transform,box-shadow] disabled:opacity-50 active:scale-[0.98]"
             >
               {isSubmitting ? (
                 <span className="inline-flex items-center gap-2">
@@ -234,7 +234,7 @@ function RotatingTextPill({
       <span className="absolute -z-10 -left-[10000px] top-0">
         <span
           ref={measurerRef}
-          className="inline-flex items-center rounded-md px-3 py-1 text-blue-700 bg-blue-50 ring-1 ring-inset ring-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-400/30 text-2xl sm:text-3xl font-semibold"
+          className="inline-flex items-center rounded-md px-2.5 py-0.5 text-blue-700 bg-blue-50 ring-1 ring-inset ring-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-400/30 text-xl sm:text-2xl font-semibold"
         >
           {widest}
         </span>
@@ -242,14 +242,14 @@ function RotatingTextPill({
 
       {/* Visible box */}
       <span
-        className="relative inline-flex items-center rounded-md px-3 py-1
+        className="relative inline-flex items-center rounded-md px-2.5 py-0.5
                    text-blue-700 bg-blue-50 ring-1 ring-inset ring-blue-200
                    dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-400/30
                    overflow-hidden"
         style={{ minWidth: minW ? `${minW}px` : undefined }}
       >
         {/* Height stabilizer */}
-        <span className="invisible select-none pointer-events-none text-2xl sm:text-3xl font-semibold">
+        <span className="invisible select-none pointer-events-none text-xl sm:text-2xl font-semibold">
           {widest}
         </span>
 
@@ -262,7 +262,7 @@ function RotatingTextPill({
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "-100%", opacity: 0 }}
               transition={spring}
-              className="inline-block text-2xl sm:text-3xl font-semibold will-change-transform"
+              className="inline-block text-xl sm:text-2xl font-semibold will-change-transform"
             >
               {texts[index]}
             </motion.span>
