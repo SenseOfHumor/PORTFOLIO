@@ -26,12 +26,11 @@ export default function ContactForm({
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
       tl.from(".cf-card", { y: 18, opacity: 0, duration: 0.5 })
-        .from(".cf-head, .cf-meta, .cf-field", {
-          y: 16,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.08,
-        }, "-=0.1")
+        .from(
+          ".cf-head, .cf-meta, .cf-field",
+          { y: 16, opacity: 0, duration: 0.5, stagger: 0.08 },
+          "-=0.1"
+        )
         .from(".cf-cta", { y: 8, opacity: 0, duration: 0.45 }, "-=0.2");
     }, rootRef);
     return () => ctx.revert();
@@ -60,13 +59,18 @@ export default function ContactForm({
       });
 
       if (res.ok) {
-        setStatus({ type: "success 🎉", message: "Thanks! Your message is on its way." });
+        setStatus({
+          type: "success",
+          message: "Thanks! Your message is on its way.",
+        });
         form.reset();
       } else {
         const data = await res.json().catch(() => ({}));
         setStatus({
           type: "error",
-          message: data?.errors?.[0]?.message || "‼️ Something went wrong. Please try again.",
+          message:
+            data?.errors?.[0]?.message ||
+            "‼️ Something went wrong. Please try again.",
         });
       }
     } catch (err) {
@@ -78,32 +82,38 @@ export default function ContactForm({
 
   return (
     <section ref={rootRef} className="flex justify-center px-4 sm:px-6 md:px-8">
-      <div className="cf-card relative max-w-2xl rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 shadow-sm bg-transparent">
+      <div className="cf-card relative max-w-2xl rounded-2xl border border-zinc-800 p-6 sm:p-8 shadow-sm bg-transparent">
         {/* HEADER */}
         <header className="cf-head">
-          {/* Force single-line on larger screens; on very tiny screens it will still try to stay one line */}
-          <h2 className="text-left text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 light:text-zinc-900 whitespace-nowrap flex items-baseline gap-2">
+          <h2 className="text-left text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-100 whitespace-nowrap flex items-baseline gap-2">
             <span>👋 Tell me about</span>
             <RotatingTextPill
-              texts={["your idea", "your project", "your startup", "your challenge", "a feature", "a bug", "a Job opportunity"]}
-              // timing and motion feel
+              texts={[
+                "your idea",
+                "your project",
+                "your startup",
+                "your challenge",
+                "a feature",
+                "a bug",
+                "a Job opportunity",
+              ]}
               interval={3200}
               spring={{ type: "spring", damping: 26, stiffness: 320 }}
             />
           </h2>
 
-          <p className="mt-2 text-left text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-2 text-left text-sm text-zinc-400">
             Keep it short and sweet. I read every message and will reply soon.. I promise!
           </p>
         </header>
 
         {/* META */}
-        <div className="cf-meta mt-5 flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="cf-meta mt-5 flex items-center gap-3 text-sm text-zinc-400">
           <span className="inline-flex items-center gap-2">
             <MapPinIcon className="size-4" />
             <span className="select-all">{location}</span>
           </span>
-          <span className="h-3 w-px bg-zinc-200 dark:bg-zinc-800" />
+          <span className="h-3 w-px bg-zinc-800" />
           <a
             href={`https://github.com/${githubHandle.replace(/^@/, "")}`}
             target="_blank"
@@ -111,14 +121,26 @@ export default function ContactForm({
             className="inline-flex items-center gap-2 hover:underline underline-offset-4"
           >
             <GitHubIcon className="size-4" />
-            <span className="truncate max-w-[12ch] sm:max-w-none">{githubHandle}</span>
+            <span className="truncate max-w-[12ch] sm:max-w-none">
+              {githubHandle}
+            </span>
           </a>
         </div>
 
         {/* FORM */}
-        <form onSubmit={handleSubmit} className="mt-8 grid grid-cols-1 gap-5" noValidate>
+        <form
+          onSubmit={handleSubmit}
+          className="mt-8 grid grid-cols-1 gap-5"
+          noValidate
+        >
           {/* Honeypot */}
-          <input type="text" name="website" autoComplete="off" className="hidden" tabIndex={-1} />
+          <input
+            type="text"
+            name="website"
+            autoComplete="off"
+            className="hidden"
+            tabIndex={-1}
+          />
 
           <InputBare
             className="cf-field"
@@ -151,10 +173,10 @@ export default function ContactForm({
 
           <div aria-live="polite" className="min-h-6">
             {status.type === "success" && (
-              <p className="text-sm text-emerald-600 dark:text-emerald-400">{status.message}</p>
+              <p className="text-sm text-emerald-400">{status.message}</p>
             )}
             {status.type === "error" && (
-              <p className="text-sm text-rose-600 dark:text-rose-400">{status.message}</p>
+              <p className="text-sm text-rose-400">{status.message}</p>
             )}
           </div>
 
@@ -162,7 +184,7 @@ export default function ContactForm({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:text-gray-900 dark:bg-gray-300 dark:hover:bg-gray-400 shadow-sm hover:shadow transition-[transform,box-shadow] disabled:opacity-50 active:scale-[0.98]"
+              className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-medium text-gray-900 bg-gray-300 hover:bg-gray-400 shadow-sm hover:shadow transition-[transform,box-shadow] disabled:opacity-50 active:scale-[0.98]"
             >
               {isSubmitting ? (
                 <span className="inline-flex items-center gap-2">
@@ -174,7 +196,7 @@ export default function ContactForm({
             </button>
           </div>
 
-          <p className="mt-1 text-[11px] text-zinc-500 dark:text-zinc-500">
+          <p className="mt-1 text-[11px] text-zinc-500">
             Powered by Formspree. We never share your information.
           </p>
         </form>
@@ -186,12 +208,7 @@ export default function ContactForm({
 /* -------------------------------------------------------------------------- */
 /*                             RotatingTextPill                               */
 /* -------------------------------------------------------------------------- */
-/**
- * Blue pill that rotates phrases without overlapping neighbors.
- * - Reserves width to the WIDEST phrase (measured offscreen) via minWidth.
- * - Keeps height stable with an invisible placeholder.
- * - Animates words with motion; no background animations elsewhere.
- */
+
 function RotatingTextPill({
   texts = ["your idea"],
   interval = 2200,
@@ -234,7 +251,7 @@ function RotatingTextPill({
       <span className="absolute -z-10 -left-[10000px] top-0">
         <span
           ref={measurerRef}
-          className="inline-flex items-center rounded-md px-2.5 py-0.5 text-blue-600 bg-blue-100 ring-1 ring-inset ring-blue-300 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-600/50 text-xl sm:text-2xl font-semibold"
+          className="inline-flex items-center rounded-md px-2.5 py-0.5 text-blue-200 bg-blue-900/30 ring-1 ring-inset ring-blue-600/50 text-xl sm:text-2xl font-semibold"
         >
           {widest}
         </span>
@@ -243,8 +260,7 @@ function RotatingTextPill({
       {/* Visible box */}
       <span
         className="relative inline-flex items-center rounded-md px-2.5 py-0.5
-                   text-blue-600 bg-blue-100 ring-1 ring-inset ring-blue-300
-                   dark:bg-blue-900/30 dark:text-blue-200 dark:ring-blue-600/50
+                   text-blue-200 bg-blue-900/30 ring-1 ring-inset ring-blue-600/50
                    overflow-hidden"
         style={{ minWidth: minW ? `${minW}px` : undefined }}
       >
@@ -281,9 +297,9 @@ function InputBare({ className = "", ...rest }) {
   return (
     <input
       className={
-        "block rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-4 py-3 " +
-        "text-[15px] text-left text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 " +
-        "focus:outline-none focus:ring-4 ring-0 focus:ring-zinc-900/10 dark:focus:ring-white/10 " +
+        "block rounded-xl border border-zinc-800 bg-transparent px-4 py-3 " +
+        "text-[15px] text-left text-zinc-100 placeholder-zinc-500 " +
+        "focus:outline-none focus:ring-4 ring-0 focus:ring-white/10 " +
         "transition-shadow focus:placeholder-transparent [&:not(:placeholder-shown)]:placeholder-transparent " +
         className
       }
@@ -297,9 +313,9 @@ function TextareaBare({ className = "", rows = 6, ...rest }) {
     <textarea
       rows={rows}
       className={
-        "block resize-y rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-4 py-3 " +
-        "text-[15px] text-left leading-relaxed text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 " +
-        "focus:outline-none focus:ring-4 focus:ring-zinc-900/10 dark:focus:ring-white/10 " +
+        "block resize-y rounded-xl border border-zinc-800 bg-transparent px-4 py-3 " +
+        "text-[15px] text-left leading-relaxed text-zinc-100 placeholder-zinc-500 " +
+        "focus:outline-none focus:ring-4 focus:ring-white/10 " +
         "transition-shadow min-h-32 focus:placeholder-transparent [&:not(:placeholder-shown)]:placeholder-transparent " +
         className
       }
