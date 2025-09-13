@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Mail, Copy, Check, Linkedin, Github } from "lucide-react";
 
 function WorkTimeline() {
   const ref = useRef(null);
