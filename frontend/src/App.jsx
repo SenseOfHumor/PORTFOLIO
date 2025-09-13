@@ -5,6 +5,7 @@ import Lanyard from './components/Lanyard'
 import ScrambledText from './components/ScrambledText'
 import LetterGlitch from './components/LetterGlitch'
 import Projects from './components/Projects'
+import Experience from './components/Experience'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import InfiniteSkill from './components/InfiniteSkill'
@@ -68,6 +69,9 @@ const handleAnimationComplete = () => {
             </div>
             <SkillsMarquee />
           </div>
+        </section>
+        <section id="experience" className="section">
+          <Experience />
         </section>
 
         <section id="projects" className="section">

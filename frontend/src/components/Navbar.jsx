@@ -25,6 +25,15 @@ const Navbar = () => {
       ),
     },
     {
+      label: "Experience",
+      href: "#experience",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path d="M3 13h18v8H3v-8zm2 2v4h14v-4H5zM7 3h10v2H7V3zm-4 6h18v2H3V9z" />
+        </svg>
+      ),
+    },
+    {
       label: "Projects",
       href: "#projects",
       icon: (

@@ -17,7 +17,7 @@ const projects = [
     status: "Maximize ATS for your resume",
   },
   {
-    title: "ARGON18",
+    title: "COVEMIND",
     image: argon,
     link: "",
     preview: "",
@@ -26,7 +26,7 @@ const projects = [
   {
     title: "BULB.io",
     image: bulbimage,
-    link: "",
+    link: "https://github.com/SenseOfHumor/BULB",
     preview: "",
     status: "Create Actionable Insights from Data | Automate Research",
   },
@@ -36,7 +36,7 @@ export default function Projects() {
   return (
     <div className="max-w-5xl mx-auto">
       {/* Headings */}
-      <h2 className="text-2xl text-[var(--sec)] mb-20 shiny-sec">My works</h2>
+      <h2 className="text-2xl text-[var(--sec)] mb-20 shiny-sec">My Projects</h2>
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
