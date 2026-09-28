@@ -25,16 +25,12 @@ function WorkTimeline() {
 
   const data = [
     {
-      title: "2026 — Prudential Financial (Incoming Rotational SDE)",
+      title: "2026 — Prudential Financial (Rotational Software Engineer)",
       content: (
         <div>
           <p className="mb-4 text-xs md:text-sm text-neutral-800 dark:text-neutral-200">
-            Accepted an offer to join Prudential’s Rotational Software Engineering program starting 2026.
+            Joined Prudential’s Global Technology rotational software engineering program in July 2026.
           </p>
-          <ul className="list-disc pl-5 space-y-2 text-xs md:text-sm text-neutral-700 dark:text-neutral-300">
-            <li>Will rotate across Global Technology teams to find our areas of interest</li>
-            <li>Program designed to accelerate leadership and technical depth</li>
-          </ul>
         </div>
       ),
     },

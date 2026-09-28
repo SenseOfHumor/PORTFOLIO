@@ -7,7 +7,6 @@ import bulbimage from "/bulb.png";
 // Example stock images (you can replace these with your own imports or URLs)
 const restless = restlessimage;
 const argon = argonimage;
-const bulb = bulbimage;
 const projects = [
   {
     title: "RESTLESS",
@@ -19,16 +18,23 @@ const projects = [
   {
     title: "COVEMIND",
     image: argon,
-    link: "",
-    preview: "",
     status: "Coming Soon! B2B SAAS for Custom Automation",
   },
   {
     title: "BULB.io",
     image: bulbimage,
     link: "https://github.com/SenseOfHumor/BULB",
-    preview: "",
     status: "Create Actionable Insights from Data | Automate Research",
+  },
+  {
+    title: "WAND AI Hardware",
+    link: "https://github.com/SenseOfHumor/wand-hardware-community-edition",
+    status: "ESP32-S3 e-reader with EPUB, RSVP, and utility tools",
+  },
+  {
+    title: "pico-read",
+    link: "https://github.com/SenseOfHumor/pico-read",
+    status: "ESP32-C6 speed reader with a fixed anchor-letter display",
   },
 ];
 
@@ -40,22 +46,31 @@ export default function Projects() {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, i) => (
-            <div key={i} className="group">
-              <a
-                href={project.preview}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block"
-              >
-                {/* Image */}
-                <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-4">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-48 md:h-72 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+          {projects.map((project, i) => {
+            const CardVisual = project.preview || project.link ? "a" : "div";
+            return (
+              <div key={i} className="group">
+                <CardVisual
+                  {...(project.preview || project.link
+                    ? { href: project.preview || project.link, target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="block"
+                >
+                  {/* Image */}
+                  <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-4">
+                    {project.image ? (
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-48 md:h-72 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-48 md:h-72 flex items-center justify-center bg-gradient-to-br from-purple-950 via-slate-900 to-blue-950 text-white text-3xl font-semibold group-hover:scale-105 transition-transform duration-300">
+                        {project.title}
+                      </div>
+                    )}
+                  </div>
+                </CardVisual>
 
                 {/* Info */}
                 <div className="flex items-center px-3">
@@ -69,43 +84,49 @@ export default function Projects() {
                   {/* Buttons */}
                   <div className="flex gap-2 ml-auto">
                     {/* GitHub */}
-                    <a
-                      target="_blank"
-                      href={project.link}
-                      aria-label="GitHub"
-                      className="size-14 flex justify-center items-center text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="size-7"
+                    {project.link && (
+                      <a
+                        target="_blank"
+                        href={project.link}
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} on GitHub`}
+                        className="size-14 flex justify-center items-center text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
                       >
-                        <path d="M24 12L18.3431 17.6569L16.9289 16.2426L21.1716 12L16.9289 7.75736L18.3431 6.34315L24 12ZM2.82843 12L7.07107 16.2426L5.65685 17.6569L0 12L5.65685 6.34315L7.07107 7.75736L2.82843 12ZM9.78845 21H7.66009L14.2116 3H16.3399L9.78845 21Z" />
-                      </svg>
-                    </a>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="size-7"
+                        >
+                          <path d="M24 12L18.3431 17.6569L16.9289 16.2426L21.1716 12L16.9289 7.75736L18.3431 6.34315L24 12ZM2.82843 12L7.07107 16.2426L5.65685 17.6569L0 12L5.65685 6.34315L7.07107 7.75736L2.82843 12ZM9.78845 21H7.66009L14.2116 3H16.3399L9.78845 21Z" />
+                        </svg>
+                      </a>
+                    )}
 
                     {/* Preview */}
-                    <a
-                      target="_blank"
-                      href={project.preview}
-                      aria-label="Preview"
-                      className="size-14 flex justify-center items-center text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="size-7"
+                    {project.preview && (
+                      <a
+                        target="_blank"
+                        href={project.preview}
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} preview`}
+                        className="size-14 flex justify-center items-center text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
                       >
-                        <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z" />
-                      </svg>
-                    </a>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="size-7"
+                        >
+                          <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z" />
+                        </svg>
+                      </a>
+                    )}
                   </div>
                 </div>
-              </a>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
 
         {/* More projects button */}
