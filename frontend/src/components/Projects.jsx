@@ -3,6 +3,7 @@ import React from "react";
 import restlessimage from "/restless.png";
 import argonimage from "/argon.png";
 import bulbimage from "/bulb.png";  
+import picoreadimage from "/picoread.jpg";
 
 // Example stock images (you can replace these with your own imports or URLs)
 const restless = restlessimage;
@@ -33,6 +34,7 @@ const projects = [
   },
   {
     title: "pico-read",
+    image: picoreadimage,
     link: "https://github.com/SenseOfHumor/pico-read",
     status: "ESP32-C6 speed reader with a fixed anchor-letter display",
   },

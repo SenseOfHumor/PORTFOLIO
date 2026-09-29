@@ -29,8 +29,14 @@ function WorkTimeline() {
       content: (
         <div>
           <p className="mb-4 text-xs md:text-sm text-neutral-800 dark:text-neutral-200">
-            Joined Prudential’s Global Technology rotational software engineering program in July 2026.
+            Joined Prudential’s Global Technology rotational program in July 2026. Working on backend systems, cloud architecture, and integrations supporting life insurance distribution.
           </p>
+          <ul className="list-disc pl-5 space-y-2 text-xs md:text-sm text-neutral-700 dark:text-neutral-300">
+            <li>Building new capabilities and modernizing existing services with Java/Spring, AWS, and Salesforce.</li>
+            <li>Creating and updating API gateway configurations in Kong as part of broader integration work.</li>
+            <li>Working with Dynatrace and application observability to improve visibility into service behavior and troubleshooting.</li>
+            <li>Contributing to a high-visibility internal tool using Python, alongside improvements to development and debugging workflows.</li>
+          </ul>
         </div>
       ),
     },
